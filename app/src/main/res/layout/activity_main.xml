@@ -71,7 +71,7 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:inputType="number"
-                            android:maxLength="4"
+                            android:maxLength="2"
                             android:selectAllOnFocus="true"
                             android:singleLine="true"
                             android:textAlignment="center" />
@@ -99,6 +99,7 @@
                 android:layout_margin="8dp">
 
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/info_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 

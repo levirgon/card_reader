@@ -1,15 +1,18 @@
 package com.tutexp.card_reader;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tutexp.card_reader.database.DBManager;
 import com.tutexp.card_reader.model.Card;
+import com.tutexp.card_reader.utils.SharedPrefManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView brandText;
     private TextView prepaidText;
     private TextView numberText;
+    private ConstraintLayout infoContainer;
 
 
     @Override
@@ -36,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        addAllInformation();
+        if (!SharedPrefManager.getInstance(this).isLoaded()) {
+            addAllInformation();
+        }
     }
 
     private void addAllInformation() {
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeViews() {
         cardNumber1 = findViewById(R.id.card_type_input);
         cardNumber2 = findViewById(R.id.bank_type_input);
-
+        infoContainer = findViewById(R.id.info_container);
         cardNumber1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -103,9 +109,14 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Card card = mDBManager.getCardInfo(bin1 + bin2);
                         //setInformation
+                        if(infoContainer.getVisibility()== View.GONE){
+                            infoContainer.setVisibility(View.VISIBLE);
+                        }
                         updateUI(card);
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Information Not Found", Toast.LENGTH_LONG).show();
+                        infoContainer.setVisibility(View.GONE);
+
                     }
 
                 }
